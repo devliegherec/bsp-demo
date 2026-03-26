@@ -6,7 +6,7 @@ authors = ["Charlotte De Vlieghere <charlotte.devlieghere@tiro.health>"]
 package-mode = false  
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = ">=3.10,<3.15" 
 streamlit = "1.27.0"
 pandas = "^1.2"
 plotly = "5.18.0"
@@ -22,9 +22,6 @@ click = "^8"
 tqdm = "*"
 emoji = "*"
 protobuf = "3.20.0"
-
-[tool.poetry.group.dev.dependencies]
-# Left empty for transitive dependencies to be handled by Poetry automatically
 
 [build-system]
 requires = ["poetry-core"]
