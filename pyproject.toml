@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "tiro-bsp"
+version = "0.0.1"
+description = "Dashboard BSP demo day"
+authors = ["Charlotte De Vlieghere <charlotte.devlieghere@tiro.healt>"]
+readme = "README.md"
+packages = []
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.15"
+pydantic = "*"
+click = "^8"
+numpy="1.21.5"
+elasticsearch = "^7.13.4"
+pandas = "^1.2"
+emoji= "*"
+tqdm = "*"
+eland="^7.14.1b1"
+voila = "*"
+altair = "^4.1.0"
+streamlit = "1.27.0"
+xlrd = "^1.2.0"
+xlsxwriter= "*"
+"google.cloud" = "*"
+google-cloud-storage = "*"
+openpyxl = "*"
+watchdog = "*"
+plotly = "5.18.0"
+google-api-python-client = "*"
+ndjson = "*"
+scipy = "*"
+protobuf="3.20.0"
+fhirkit = "^0.1.2"
+bigquery = "^0.0.41"
+db-dtypes = "^1.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytz_deprecation_shim = "*"
+cycler = "*"
+pympler = "*"
+pydeck = "*"
+blinker = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
