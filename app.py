@@ -1,11 +1,7 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import numpy as np
-import json
 from toolbox.plotting.plotly_barchart import stacked_barchart
 
 st.set_page_config(
