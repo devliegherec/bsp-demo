@@ -15,7 +15,7 @@ def render_tab_patient_list(dff, n):
         st.markdown("<br>", unsafe_allow_html=True)
 
     display_cols = {
-        'report_version_id': 'Report ID',
+        'report_id': 'Report ID',
         'aanvraagdatum': 'Date',
         'tumorlokalisatie_1': 'Primary loc.',
         'locatie_display': 'Sublocation',
@@ -23,10 +23,6 @@ def render_tab_patient_list(dff, n):
         'histologisch_tumortype': 'Histological type',
         'graad_kort': 'Grade',
         'pt_stage': 'pT',
-        'lvi_status': 'LVI',
-        'pni_status': 'PNI',
-        'maximale_tumordimensie': 'Dim. (mm)',
-        'marge_status': 'Margin',
         'neoadjuvante_therapie': 'Neoadj.'
     }
 
@@ -37,15 +33,6 @@ def render_tab_patient_list(dff, n):
         mask = tabel.apply(lambda row: row.astype(str).str.contains(zoek, case=False).any(), axis=1)
         tabel = tabel[mask]
 
-    def kleur_marge(val):
-        if 'Positive' in str(val):
-            return 'background-color:#fde8e8;color:#c0392b'
-        if 'Close' in str(val):
-            return 'background-color:#fef3cd;color:#856404'
-        if 'Free' in str(val):
-            return 'background-color:#d1fae5;color:#065f46'
-        return ''
-
     def kleur_stage(val):
         sc = {'pTis':'background-color:#d1fae5;color:#065f46',
               'pT1':'background-color:#d1fae5;color:#065f46',
@@ -55,8 +42,7 @@ def render_tab_patient_list(dff, n):
               'pT4b':'background-color:#fde8e8;color:#c0392b'}
         return sc.get(str(val), '')
 
-    styled = tabel.style.applymap(kleur_marge, subset=['Margin']) \
-                        .applymap(kleur_stage, subset=['pT'])
+    styled = tabel.style.applymap(kleur_stage, subset=['pT'])
 
     st.dataframe(styled, use_container_width=True, height=500, hide_index=True)
 
