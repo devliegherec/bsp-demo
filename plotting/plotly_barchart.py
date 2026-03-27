@@ -221,7 +221,7 @@ def stacked_barchart(df, x_column, stack_category, x_stack_column=None, key="key
 def add_missing(df,column,categories):
     for key in categories:
         if key not in list(df[column]):
-                df = df.append(pd.Series(0, index=df.columns), ignore_index=True)
+                df = pd.concat([df, pd.DataFrame([pd.Series(0, index=df.columns)])], ignore_index=True)
                 df[column] = df[column].replace([0],key)
     df = order_df(df, column, categories)
     return df
