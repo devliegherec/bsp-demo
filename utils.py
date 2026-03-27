@@ -69,20 +69,21 @@ def render_oral_cavity_svg(dff):
     def teal_color(pct):
         if pct == 0:
             return '#EAEAEA'
+        elif 'hard gehemelte' in region:
+            return '#9fbeb4'
+        elif 'voorste 2/3 tong' in region:
+            return '#9fbeb4'
         t = min(pct / max_pct, 1.0)
-        r = int(0xe8 + (0x0d - 0xe8) * t)
-        g = int(0xf5 + (0x5c - 0xf5) * t)
-        b = int(0xf2 + (0x44 - 0xf2) * t)
+        r = int(0xf8 + (0x0d - 0xf8) * t)
+        g = int(0xfc + (0x5c - 0xfc) * t)
+        b = int(0xfa + (0x44 - 0xfa) * t)
         return f'#{r:02x}{g:02x}{b:02x}'
 
     def purple_color(pct):
         if pct == 0:
             return '#D5D5D5'
-        t = min(pct / max_pct, 1.0)
-        r = int(0xe8 + (0x4a - 0xe8) * t)
-        g = int(0xe8 + (0x43 - 0xe8) * t)
-        b = int(0xf9 + (0xb8 - 0xf9) * t)
-        return f'#{r:02x}{g:02x}{b:02x}'
+        else:
+            return '#aca7ea'
 
     def mint_color(pct):
         if pct == 0:
@@ -114,8 +115,8 @@ def render_oral_cavity_svg(dff):
     for region, pct in svg_pcts.items():
         if region == 'lip':
             color = purple_color(pct)
-        elif region == 'zacht gehemelte':
-            color = mint_color(pct)
+        #elif region == 'zacht gehemelte':
+        #    color = mint_color(pct)
         else:
             color = teal_color(pct)
         svg_content = re.sub(
