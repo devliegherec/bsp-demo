@@ -66,7 +66,7 @@ def render_tab_invasion_margins(dff, n):
         fig3 = px.scatter(marge_data, x='idx', y='definitieve_minimale_tumorvrije_marge',
                           color='color',
                           color_discrete_map={'Positive': COLOR_RED, 'Close': COLOR_AMBER, 'Free': COLOR_GREEN},
-                          hover_data={'report_id': True, 'pt_stage': True,
+                          hover_data={'patient_display': True, 'pt_stage': True,
                                       'idx': False, 'color': False},
                           labels={'definitieve_minimale_tumorvrije_marge': 'Margin (mm)',
                                   'idx': 'Patient (sorted)'})

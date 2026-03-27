@@ -1,5 +1,5 @@
 import streamlit as st
-from toolbox.plotting.plotly_barchart import stacked_barchart
+from plotting.plotly_barchart import stacked_barchart
 
 from config import STYLES
 from data import load_data
@@ -74,13 +74,19 @@ mom_mondholte_label = mom_delta_label(mondholte_series)
 lip_series = dff[dff['tumorlokalisatie_1'] == 'lip']['tumorlokalisatie_1']
 mom_lip_label = mom_delta_label(lip_series)
 
+# ── Records added this month as percentage of total ───────────────────────────
+records_this_month = int(timeline_all.iloc[-1]) if len(timeline_all) > 0 else 0
+pct_this_month = (records_this_month / n * 100) if n > 0 else 0
+pct_this_month_label = f"{pct_this_month:.1f}%"
+
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3, tab4, tab5 = st.tabs(
     ["📍 General", "🔬 Tumor profile", "⚡ Invasion & Margins", "📊 Staging", "📋 Patient list"]
 )
 
 with tab1:
-    render_tab_general(dff, n, mom_all_label, mom_mondholte_label, mom_lip_label)
+    render_tab_general(dff, n, mom_all_label, mom_mondholte_label, mom_lip_label,
+                      records_this_month, pct_this_month_label)
 
 with tab2:
     render_tab_tumor_profile(dff)

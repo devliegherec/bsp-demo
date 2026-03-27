@@ -15,7 +15,7 @@ def render_tab_patient_list(dff, n):
         st.markdown("<br>", unsafe_allow_html=True)
 
     display_cols = {
-        'report_id': 'Report ID',
+        'report_version_id': 'Report ID',
         'aanvraagdatum': 'Date',
         'tumorlokalisatie_1': 'Primary loc.',
         'locatie_display': 'Sublocation',
