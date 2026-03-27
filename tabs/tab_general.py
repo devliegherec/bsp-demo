@@ -14,20 +14,18 @@ except ImportError:
     stacked_barchart = None
 
 
-def render_tab_general(dff, n, mom_all_label, mom_mondholte_label, mom_lip_label,
-                      records_this_month, pct_this_month_label):
+def render_tab_general(dff, n, num_reports, mom_all_label, mom_mondholte_label, mom_lip_label):
     """Render the General tab with overview metrics and location analysis."""
 
     # KPI row
-    c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
+    c1, c2, c3, c4, c5, c6 = st.columns(6)
     c1.metric("Unique patients", n, mom_all_label)
-    c2.metric("Reports", n, mom_all_label)
-    c3.metric("This month", records_this_month, pct_this_month_label)
-    c4.metric("First report", dff['aanvraagdatum'].min().strftime('%d/%m/%Y') if n > 0 else "—")
-    c5.metric("Last report", dff['aanvraagdatum'].max().strftime('%d/%m/%Y') if n > 0 else "—")
-    c6.metric("Oral cavity", f"{int((dff['tumorlokalisatie_1'] == 'mondholte').sum()/n*100)}%",
+    c2.metric("Reports", num_reports, mom_all_label)
+    c3.metric("First report", dff['aanvraagdatum'].min().strftime('%d/%m/%Y') if num_reports > 0 else "—")
+    c4.metric("Last report", dff['aanvraagdatum'].max().strftime('%d/%m/%Y') if num_reports > 0 else "—")
+    c5.metric("Oral cavity", f"{int((dff['tumorlokalisatie_1'] == 'mondholte').sum()/num_reports*100)}%",
               mom_mondholte_label)
-    c7.metric("Lip", f"{int((dff['tumorlokalisatie_1'] == 'lip').sum()/n*100)}%",
+    c6.metric("Lip", f"{int((dff['tumorlokalisatie_1'] == 'lip').sum()/num_reports*100)}%",
               mom_lip_label)
 
     # Timeline

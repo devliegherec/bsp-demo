@@ -44,40 +44,36 @@ if len(datum_range) == 2:
         (dff['aanvraagdatum'].dt.date <= datum_range[1])
     ]
 
-n = len(dff)
+n = dff['patient_reference'].nunique()
+num_reports = dff['report_id'].nunique()
 
 # ── Header ────────────────────────────────────────────────────────────────────
 st.title("Oral Cavity Tumors")
 
-if n == 0:
+if num_reports == 0:
     st.warning("No reports found with the current filters.")
     st.stop()
 
-# ── Month-over-month delta ────────────────────────────────────────────────────
-def mom_delta_label(series):
+# ── Current month record count ────────────────────────────────────────────────
+def current_month_count_label(series):
     timeline = series.groupby(dff['jaar_maand']).size().sort_index()
-    if len(timeline) >= 2:
-        delta = int(timeline.iloc[-1]) - int(timeline.iloc[-2])
-        return f"{'+' if delta >= 0 else ''}{delta}"
+    if len(timeline) > 0:
+        count = int(timeline.iloc[-1])
+        return f"+{count}"
     return None
 
 timeline_all = dff.groupby('jaar_maand').size().sort_index()
-if len(timeline_all) >= 2:
-    mom_all = int(timeline_all.iloc[-1]) - int(timeline_all.iloc[-2])
-    mom_all_label = f"{'+' if mom_all >= 0 else ''}{mom_all}"
+if len(timeline_all) > 0:
+    mom_all = int(timeline_all.iloc[-1])
+    mom_all_label = f"+{mom_all}"
 else:
     mom_all_label = None
 
 mondholte_series = dff[dff['tumorlokalisatie_1'] == 'mondholte']['tumorlokalisatie_1']
-mom_mondholte_label = mom_delta_label(mondholte_series)
+mom_mondholte_label = current_month_count_label(mondholte_series)
 
 lip_series = dff[dff['tumorlokalisatie_1'] == 'lip']['tumorlokalisatie_1']
-mom_lip_label = mom_delta_label(lip_series)
-
-# ── Records added this month as percentage of total ───────────────────────────
-records_this_month = int(timeline_all.iloc[-1]) if len(timeline_all) > 0 else 0
-pct_this_month = (records_this_month / n * 100) if n > 0 else 0
-pct_this_month_label = f"{pct_this_month:.1f}%"
+mom_lip_label = current_month_count_label(lip_series)
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3, tab4, tab5 = st.tabs(
@@ -85,8 +81,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs(
 )
 
 with tab1:
-    render_tab_general(dff, n, mom_all_label, mom_mondholte_label, mom_lip_label,
-                      records_this_month, pct_this_month_label)
+    render_tab_general(dff, n, num_reports, mom_all_label, mom_mondholte_label, mom_lip_label)
 
 with tab2:
     render_tab_tumor_profile(dff)

@@ -26,17 +26,18 @@ def render_tab_invasion_margins(dff, n):
         }
         inv_df = __import__('pandas').DataFrame(inv_data)
         inv_df['Pct'] = (inv_df['Positive'] / n * 100).round(1)
-        inv_df['Negative/N/A'] = n - inv_df['Positive']
+        inv_df['Pct_Negative'] = ((n - inv_df['Positive']) / n * 100).round(1)
         fig = go.Figure()
-        fig.add_bar(name='Positive', y=inv_df['Type'], x=inv_df['Positive'],
+        fig.add_bar(name='Positive', y=inv_df['Type'], x=inv_df['Pct'],
                     orientation='h', marker_color=COLOR_RED,
-                    text=inv_df['Positive'].astype(str) + ' (' + inv_df['Pct'].astype(str) + '%)',
+                    text=inv_df['Pct'].astype(str) + '%',
                     textposition='inside')
-        fig.add_bar(name='Negative/N/A', y=inv_df['Type'], x=inv_df['Negative/N/A'],
+        fig.add_bar(name='Negative/N/A', y=inv_df['Type'], x=inv_df['Pct_Negative'],
                     orientation='h', marker_color='#e9ecef', textposition='none')
         fig.update_layout(barmode='stack', margin=dict(t=10, b=60, l=10, r=10),
-                          height=320, xaxis_title='Number of patients',
-                          yaxis_title='', legend=dict(orientation='h', y=-0.15))
+                          height=320, xaxis_title='Percentage of patients (%)',
+                          yaxis_title='', showlegend=False,
+                          xaxis=dict(range=[0, 100]))
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
@@ -51,8 +52,8 @@ def render_tab_invasion_margins(dff, n):
         }
         fig2 = px.pie(marge_counts, names='Status', values='Count',
                       color='Status', color_discrete_map=marge_colors, hole=0.4)
-        fig2.update_traces(textposition='outside', textinfo='percent+label')
-        fig2.update_layout(showlegend=False, margin=dict(t=20, b=20, l=100, r=100), height=320)
+        fig2.update_traces(textposition='outside', textinfo='percent+label', textfont=dict(size=11))
+        fig2.update_layout(showlegend=False, margin=dict(t=20, b=20, l=120, r=120), height=320)
         st.plotly_chart(fig2, use_container_width=True)
 
     # Margin scatter

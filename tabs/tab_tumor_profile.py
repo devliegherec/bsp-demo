@@ -14,8 +14,11 @@ def render_tab_tumor_profile(dff):
         st.subheader("Histological type")
         ht = dff['histologisch_tumortype'].value_counts().reset_index()
         ht.columns = ['Type', 'Count']
-        fig = px.bar(ht, x='Count', y='Type', orientation='h',
-                     color_discrete_sequence=[COLOR_BLUE], text='Count')
+        total = ht['Count'].sum()
+        ht['Percentage'] = (ht['Count'] / total * 100).round(1)
+        ht['Label'] = ht['Percentage'].astype(str) + '%'
+        fig = px.bar(ht, x='Percentage', y='Type', orientation='h',
+                     color_discrete_sequence=[COLOR_BLUE], text='Label')
         fig.update_traces(textposition='outside')
         fig.update_layout(margin=dict(t=10, b=10, l=10, r=40), height=300,
                           yaxis_title='', xaxis_title='')
