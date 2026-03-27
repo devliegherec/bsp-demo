@@ -47,7 +47,7 @@ n = dff['patient_reference'].nunique()
 num_reports = dff['report_id'].nunique()
 
 # ── Header ────────────────────────────────────────────────────────────────────
-st.title("Oral Cavity Tumors")
+st.title("Oral cavity tumors")
 
 if num_reports == 0:
     st.warning("No reports found with the current filters.")
