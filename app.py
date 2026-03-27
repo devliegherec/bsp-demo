@@ -77,20 +77,20 @@ mom_lip_label = current_month_count_label(lip_series)
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3, tab4, tab5 = st.tabs(
-    ["📍 General", "🔬 Tumor profile", "⚡ Invasion & Margins", "📊 Staging", "📋 Patient list"]
+    ["📍 General", "📊 Staging", "⚡ Invasion & Margins", "🔬 Tumor profile", "📋 Patient list"]
 )
 
 with tab1:
     render_tab_general(dff, n, num_reports, mom_all_label, mom_mondholte_label, mom_lip_label)
 
 with tab2:
-    render_tab_tumor_profile(dff)
+    render_tab_staging(dff)
 
 with tab3:
     render_tab_invasion_margins(dff, n)
 
 with tab4:
-    render_tab_staging(dff)
+    render_tab_tumor_profile(dff)
 
 with tab5:
     render_tab_patient_list(dff, n)
