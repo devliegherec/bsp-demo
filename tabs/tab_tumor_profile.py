@@ -30,24 +30,30 @@ def render_tab_tumor_profile(dff):
     with col2:
         st.subheader("Invasion depth")
         inv_order = ['≤ 5 mm', '> 5 mm en ≤ 10 mm', '> 10 mm', 'niet van toepassing']
-        inv_col = ['#639922', '#ef9f27', '#e24b4a', '#888780']
+        inv_col_map = {
+            '≤ 5 mm': '#639922',
+            '> 5 mm en ≤ 10 mm': '#ef9f27',
+            '> 10 mm': '#e24b4a',
+            'niet van toepassing': '#888780'
+        }
         id_counts = dff['invasiediepte'].value_counts().reset_index()
         id_counts.columns = ['Depth', 'Count']
+        id_counts = id_counts[id_counts['Count'] > 0]
         id_counts['order'] = id_counts['Depth'].apply(
             lambda x: inv_order.index(x) if x in inv_order else 99)
         id_counts = id_counts.sort_values('order')
         total = id_counts['Count'].sum()
         id_counts['Percentage'] = (id_counts['Count'] / total * 100).round(0)
         id_counts['Label'] = id_counts['Percentage'].astype(int).astype(str) + '%'
+        colors = [inv_col_map.get(depth, '#000000') for depth in id_counts['Depth']]
         fig3 = px.bar(id_counts, x='Percentage', y='Depth',
-                      color='Depth',
-                      color_discrete_sequence=inv_col,
                       orientation='h',
                       text='Label')
-        fig3.update_traces(textposition='outside', textfont=dict(size=14))
+        fig3.update_traces(marker_color=colors, textposition='outside', textfont=dict(size=18))
         fig3.update_layout(showlegend=False, margin=dict(t=10, b=10, l=10, r=80), height=300,
-                           xaxis_title='%', yaxis_title='',
-                           xaxis={'range': [0, 70]})
+                           xaxis_title='', yaxis_title='',
+                           xaxis={'range': [0, 70]},
+                           yaxis={'categoryorder': 'array', 'categoryarray': id_counts['Depth'].tolist()})
         st.plotly_chart(fig3, use_container_width=True)
 
 
