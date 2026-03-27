@@ -10,19 +10,6 @@ def load_data():
     df = pd.read_excel("Mondholte_tumoren__dashboardversie__Major_Version_3__3-0-0__extended.xlsx")
     df['aanvraagdatum'] = pd.to_datetime(df['aanvraagdatum'], errors='coerce')
     df['jaar_maand'] = df['aanvraagdatum'].dt.to_period('M').astype(str)
-
-    # Clean: mondholte_locatie should only have values when tumorlokalisatie_1 == 'mondholte'
-    invalid_mondholte = (df['tumorlokalisatie_1'] != 'mondholte') & (df['mondholte_locatie'].notna())
-    if invalid_mondholte.sum() > 0:
-        st.warning(f"⚠️ Cleaned {invalid_mondholte.sum()} rows: mondholte_locatie values cleared when tumorlokalisatie_1 ≠ 'mondholte'")
-        df.loc[invalid_mondholte, 'mondholte_locatie'] = pd.NA
-
-    # Clean: mondholte_locatie should never contain 'lip'
-    has_lip = df['mondholte_locatie'] == 'lip'
-    if has_lip.sum() > 0:
-        st.warning(f"⚠️ Cleaned {has_lip.sum()} rows: removed 'lip' values from mondholte_locatie")
-        df.loc[has_lip, 'mondholte_locatie'] = pd.NA
-
     df['locatie_display'] = df.apply(
         lambda r: r['mondholte_locatie'] if pd.notna(r['mondholte_locatie']) else r['liplocatie'], axis=1
     )
