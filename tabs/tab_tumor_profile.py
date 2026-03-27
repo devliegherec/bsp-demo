@@ -15,13 +15,15 @@ def render_tab_tumor_profile(dff):
         ht = dff['histologisch_tumortype'].value_counts().reset_index()
         ht.columns = ['Type', 'Count']
         total = ht['Count'].sum()
-        ht['Percentage'] = (ht['Count'] / total * 100).round(1)
-        ht['Label'] = ht['Percentage'].astype(str) + '%'
+        ht['Percentage'] = (ht['Count'] / total * 100).round(0)
+        ht['Label'] = ht['Percentage'].astype(int).astype(str) + '%'
         fig = px.bar(ht, x='Percentage', y='Type', orientation='h',
                      color_discrete_sequence=[COLOR_BLUE], text='Label')
         fig.update_traces(textposition='outside')
-        fig.update_layout(margin=dict(t=10, b=10, l=10, r=40), height=300,
-                          yaxis_title='', xaxis_title='')
+        fig.update_layout(margin=dict(t=10, b=10, l=10, r=80), height=300,
+                          yaxis_title='', xaxis_title='',
+                          xaxis={'range': [0, 70]},
+                          yaxis={'categoryorder': 'total ascending'})
         st.plotly_chart(fig, use_container_width=True)
 
 
@@ -35,16 +37,17 @@ def render_tab_tumor_profile(dff):
             lambda x: inv_order.index(x) if x in inv_order else 99)
         id_counts = id_counts.sort_values('order')
         total = id_counts['Count'].sum()
-        id_counts['Percentage'] = (id_counts['Count'] / total * 100).round(1)
-        id_counts['Label'] = id_counts['Count'].astype(str)
-        fig3 = px.bar(id_counts, x='Count', y='Depth',
+        id_counts['Percentage'] = (id_counts['Count'] / total * 100).round(0)
+        id_counts['Label'] = id_counts['Percentage'].astype(int).astype(str) + '%'
+        fig3 = px.bar(id_counts, x='Percentage', y='Depth',
                       color='Depth',
                       color_discrete_sequence=inv_col,
                       orientation='h',
                       text='Label')
-        fig3.update_traces(textposition='inside')
-        fig3.update_layout(showlegend=False, margin=dict(t=10, b=10, l=10, r=40), height=300,
-                           xaxis_title='', yaxis_title='')
+        fig3.update_traces(textposition='outside', textfont=dict(size=14))
+        fig3.update_layout(showlegend=False, margin=dict(t=10, b=10, l=10, r=80), height=300,
+                           xaxis_title='%', yaxis_title='',
+                           xaxis={'range': [0, 70]})
         st.plotly_chart(fig3, use_container_width=True)
 
 
