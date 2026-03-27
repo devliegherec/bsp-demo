@@ -5,7 +5,6 @@ from config import STYLES
 from data import load_data
 from tabs.tab_general import render_tab_general
 from tabs.tab_tumor_profile import render_tab_tumor_profile
-from tabs.tab_invasion_margins import render_tab_invasion_margins
 from tabs.tab_staging import render_tab_staging
 from tabs.tab_patient_list import render_tab_patient_list
 
@@ -76,8 +75,8 @@ lip_series = dff[dff['tumorlokalisatie_1'] == 'lip']['tumorlokalisatie_1']
 mom_lip_label = current_month_count_label(lip_series)
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
-tab1, tab2, tab3, tab4, tab5 = st.tabs(
-    ["📍 General", "📊 Staging", "⚡ Invasion & Margins", "🔬 Tumor profile", "📋 Patient list"]
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["📍 General", "📊 Staging", "🔬 Tumor profile", "📋 Patient list"]
 )
 
 with tab1:
@@ -87,10 +86,7 @@ with tab2:
     render_tab_staging(dff)
 
 with tab3:
-    render_tab_invasion_margins(dff, n)
-
-with tab4:
     render_tab_tumor_profile(dff)
 
-with tab5:
+with tab4:
     render_tab_patient_list(dff, n)
