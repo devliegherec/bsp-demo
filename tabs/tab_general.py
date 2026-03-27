@@ -9,7 +9,7 @@ from config import COLOR_PURP, COLOR_TEAL
 from utils import render_oral_cavity_svg
 
 try:
-    from toolbox.plotting.plotly_barchart import stacked_barchart
+    from plotting.plotly_barchart import stacked_barchart
 except ImportError:
     stacked_barchart = None
 
